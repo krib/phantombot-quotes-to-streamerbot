@@ -2,7 +2,7 @@
 	var file = './addons/quotes.dat', // location to write.
 		table = 'quotes', // table to pull.
 		keys,
-		data = '[',
+		data = '{"version": 0,"t": "' + new Date().toISOString() + '","quotes": [',
 		i,
 		quoteId = 1,
 		quoteData,
@@ -20,19 +20,20 @@
 			game = JSON.parse($.twitch.SearchGame(quoteData[3]));
 
 			data += '{' + 
-				'"Timestamp":"' + new Date(quoteData[2]).toISOString() + '",' + 
-				'"Id":'         + quoteId++          + ','  + 
-				'"UserId":'     + user.users[0]._id  + ','  + 
-				'"User":"'      + quoteData[0]       + '",' + 
-				'"GameId":'     + game.games[0]._id  + ','  + 
-				'"GameName":"'  + quoteData[3]       + '",' + 
-				'"Quote":"'     + quoteData[1]       + '"'  + 
+				'"timestamp":"' + new Date(Number(quoteData[2])).toISOString() + '",' + 
+				'"id":'         + quoteId++          + ','  + 
+				'"userId":'     + user.users[0]._id  + ','  + 
+				'"user":"'      + quoteData[0]       + '",' + 
+				'"platform": "twitch",' + 
+				'"gameId":'     + game.games[0]._id  + ','  + 
+				'"gameName":"'  + quoteData[3]       + '",' + 
+				'"quote":"'     + quoteData[1]       + '"'  + 
 			'},';
 		}
 
-		data = data.slice(0,-1) + ']'; // Remove the trailing comma on the last quote
+		data = data.slice(0,-1) + ']}'; // Remove the trailing comma on the last quote
 
 		$.writeToFile(data, file, false);
 		$.consoleLn('Done.');
-	}, 6000);
+	}, 10000);
 })();
